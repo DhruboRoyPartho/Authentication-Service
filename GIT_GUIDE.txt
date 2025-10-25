@@ -1,0 +1,64 @@
+# How to Upload Your Project to GitHub Using Git
+
+## Prerequisites
+- You need a GitHub account: https://github.com
+- Git must be installed on your system: https://git-scm.com
+
+## Step-by-Step Guide
+
+### 1. Create a New Repository on GitHub
+- Go to https://github.com and log in.
+- Click the "+" icon (top right) > "New repository".
+- Enter a repository name (e.g., `auth-service`).
+- Choose public or private.
+- Click "Create repository".
+
+### 2. Initialize Git Locally (if not already)
+Open PowerShell in your project folder:
+```
+git init
+```
+
+### 3. Add Remote Origin
+Copy the repository URL from GitHub (e.g., `https://github.com/yourusername/auth-service.git`).
+```
+git remote add origin https://github.com/yourusername/auth-service.git
+```
+
+### 4. Add All Files
+```
+git add .
+```
+
+### 5. Commit Your Changes
+```
+git commit -m "Initial commit"
+```
+
+### 6. Push to GitHub
+If this is your first push, use:
+```
+git branch -M main
+```
+Then push:
+```
+git push -u origin main
+```
+
+### 7. Check on GitHub
+- Go to your repository page on GitHub.
+- Refresh to see your files uploaded.
+
+## Common Commands
+- `git status` — See current changes
+- `git add .` — Stage all changes
+- `git commit -m "message"` — Commit changes
+- `git push` — Push changes to GitHub
+- `git pull` — Pull latest changes from GitHub
+
+## Troubleshooting
+- If asked for username/password, use your GitHub credentials or a personal access token.
+- If you get errors, check your remote URL and branch name.
+
+---
+For more help, see: https://docs.github.com/en/get-started/quickstart/create-a-repo

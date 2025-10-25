@@ -1,0 +1,51 @@
+{
+  "name": "auth-service",
+  "version": "0.1.0",
+  "description": "Customizable authentication microservice (Node, Express, MongoDB)",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "NODE_ENV=production node src/cluster.js",
+    "start:win": "set NODE_ENV=production&& node src/cluster.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest --runInBand",
+    "test:watch": "jest --watch --runInBand",
+    "test:coverage": "jest --coverage --runInBand",
+    "test:ci": "jest --ci --coverage --runInBand",
+    "test:perf": "echo \"Make sure the service is running (npm run dev) before running this command\" && k6 run tests/performance/k6-auth-flow.js",
+    "test:perf:report": "k6 run --out json=perf-results.json tests/performance/k6-auth-flow.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write '**/*.{js,json,md}'",
+    "validate": "npm run lint && npm run test:coverage",
+    "prepare": "husky install"
+  },
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "helmet": "^7.1.0",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.0",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.10.1"
+  },
+  "devDependencies": {
+    "eslint": "^9.38.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-node": "^11.1.0",
+    "husky": "^9.1.7",
+    "jest": "^29.7.0",
+    "lint-staged": "^16.2.6",
+    "mongodb-memory-server": "^10.2.3",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.6.2",
+    "supertest": "^7.1.3"
+  }
+}

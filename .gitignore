@@ -1,0 +1,54 @@
+# Node.js dependencies
+node_modules/
+
+# Environment files
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage reports
+coverage/
+
+# Test output
+*.test.json
+perf-results.json
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
+
+# Build output
+build/
+dist/
+
+# Artifacts
+*.tgz
+
+# Misc
+*.bak
+*.tmp
+
+# Ignore performance test results
+/tests/performance/report.json
+/tests/performance/perf-results.json
+
+# Ignore Husky and lint-staged state
+.husky/
+.lintstagedrc.json
+
+# Ignore k6 output
+*.k6log
+
+
+test.txt
