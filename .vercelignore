@@ -1,0 +1,19 @@
+# Ignore tests, docs and local configs to speed up deployment
+/tests/
+/tests/**
+/.vscode/
+/.github/
+/.env*
+/.env.test
+/coverage/
+/dist/
+/build/
+/.husky/
+/.lintstagedrc.json
+/.prettierignore
+/.prettierrc.json
+/.eslintrc.json
+npm-debug.log*
+.DS_Store
+.vscode/
+.idea/

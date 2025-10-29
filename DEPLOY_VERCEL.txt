@@ -1,0 +1,54 @@
+Deploying to Vercel (recommended configuration)
+
+1) Why serverless crashed
+- Vercel serverless functions cannot call app.listen() or spawn long-lived processes (cluster, background workers).
+- Code that expects to bind to a port (e.g. src/index.js / cluster.js) will crash when used as a serverless function.
+- Large/development-only modules can increase deployment size and cold-start time.
+
+2) What I changed
+- Added `api/index.js` which creates the Express app once and forwards every (req,res) to `app(req,res)`. This avoids calling `listen` and is compatible with Vercel.
+- Added `vercel.json` to rewrite all `/api/*` traffic to the single serverless function at `api/index.js`.
+- Added `.vercelignore` to reduce upload size and speed up build.
+- Added `serverless-http` as dependency previously — but we removed its usage to avoid signature mismatch. (It is safe to remove if unused.)
+
+3) Required environment variables (set in Vercel dashboard in Project > Settings > Environment Variables)
+- `MONGO_URI` — your production MongoDB connection string
+- `JWT_SECRET` — strong secret
+- `PORT` — optional (not required for serverless)
+- `FRONTEND_URL` — for reset links
+- Any other secrets from `.env` you rely on (e.g., SMTP credentials if you use real mailer)
+
+4) Recommended Vercel settings
+- Build command: (leave empty or `npm run build` if you have a build step)
+- Install Command: leave default (Vercel runs `npm install` by default)
+- Node Version: set to an LTS (18 or 20) in project settings or via `engines` in `package.json`
+- Increase function memory/duration in `vercel.json` if needed (we set memory: 1024 and maxDuration: 10 seconds)
+
+5) Production hardening checklist (suggested)
+- Do not call `app.listen()` in serverless routes. Use the `api/index.js` wrapper.
+- Reuse DB connections across invocations (connectDB already checks mongoose.readyState). Monitor connection counts.
+- Remove or mark dev-only packages as `devDependencies` (e.g., `mongodb-memory-server`, `jest`, `nodemon`). Vercel will only install prod deps during deployment.
+- Add `NODE_ENV=production` where appropriate; avoid installing dev dependencies in production builds.
+- Add a `.vercelignore` to keep deployment small.
+- Use managed SMTP (SendGrid, SES) for production mailers rather than Ethereal.
+- Add monitoring (Sentry, Error Tracking) and proper logging.
+- Add rate-limiting and request throttling for public endpoints.
+
+6) If you prefer a traditional server (recommended for heavy load)
+- Deploy to a VM/container (Docker) or Kubernetes and run the clustered script (`npm start` will run `src/cluster.js`). This avoids serverless cold-starts.
+
+7) Quick local test for serverless handler
+- Start MongoDB locally and set `MONGO_URI` in `.env`.
+- Run the dev server (express) locally and test endpoints:
+  ```powershell
+  npm run dev
+  curl http://localhost:4000/api/health
+  ```
+- For quick Vercel-like test you can run `vercel dev` (requires Vercel CLI) to verify `api/index.js` behavior.
+
+If you want I can:
+- Remove unused dependency `serverless-http` from `package.json` (we're not using it now).
+- Remove/clean dev-only packages from the repo.
+- Add a small health-check on DB connection for the health endpoint to detect failing DB on startup.
+
+Tell me which of the above you'd like me to apply next (remove serverless-http, prune dev deps, add DB health check, or prepare a Dockerfile for production).
